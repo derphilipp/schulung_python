@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<title>{{ title }}</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+    <h1>{{ title }}</h1>
+        {% for post in posts %}
+        <div class=flash> {{ post["author"]["nickname"] }} schreibt über... {{ post["body"] }} </div>
+        {% endfor %}
