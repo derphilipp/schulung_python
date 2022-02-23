@@ -1,10 +1,13 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 api = Api(app)
 
-todos = {}
+todos = {"0": "Zucchini kaufen"}
+
+parser = reqparse.RequestParser()
+parser.add_argument("description")
 
 
 class TodoSimple(Resource):
@@ -12,7 +15,10 @@ class TodoSimple(Resource):
         return {todo_id: todos[todo_id]}
 
     def put(self, todo_id):
-        todos[todo_id] = request.form["data"]
+        args = parser.parse_args()
+        print(f"{args}")
+        description = request.form["data"]
+        todos[todo_id] = description
         return {todo_id: todos[todo_id]}
 
 

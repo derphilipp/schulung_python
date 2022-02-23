@@ -1,5 +1,5 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import reqparse, Resource, Api
 
 app = Flask(__name__)
 api = Api(app)
@@ -9,13 +9,18 @@ todos = {
     "1": {"description": "Remember the milk"},
 }
 
+parser = reqparse.RequestParser()
+parser.add_argument("description")
+
 
 class ToDosAll(Resource):
     def get(self):
         return {"todos": todos}
 
     def put(self):
-        description = request.form["data"]
+        args = parser.parse_args()
+        print(args)
+        description = args["description"]
         # Generate ID by incrementing counter
         todo_id = str(len(todos))
         todos[todo_id] = {"description": description}
@@ -27,7 +32,9 @@ class ToDos(Resource):
         return todos[todo_id]
 
     def put(self, todo_id):
-        todos[todo_id]["description"] = request.form["data"]
+        args = parser.parse_args()
+        print(args)
+        todos[todo_id]["description"] = args["description"]
         return todos[todo_id]
 
 
